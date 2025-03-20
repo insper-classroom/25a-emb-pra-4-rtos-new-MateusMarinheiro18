@@ -106,7 +106,6 @@ void oled_task(void *p) {
     printf("Inicializando btn and LEDs\n");
     oled_init();
 
-    char cnt = 15;
     float distancia_cm;
     while(1){
         if (xSemaphoreTake(xSemaphoreTrigger, pdMS_TO_TICKS(100)) == pdTRUE) {
