@@ -55,11 +55,11 @@ void pin_callback(uint gpio, uint32_t events) {
 
     if (events & GPIO_IRQ_EDGE_RISE) {
         echo_start = get_absolute_time(); 
-        xQueueSend(xQueueTime, &echo_start, 0);
+        xQueueSendFromISR(xQueueTime, &echo_start, 0);
     }
     if (events & GPIO_IRQ_EDGE_FALL) {
         echo_end = get_absolute_time();
-        xQueueSend(xQueueTime, &echo_end, 0);  
+        xQueueSendFromISR(xQueueTime, &echo_end, 0);  
     }
 }
 
@@ -70,7 +70,7 @@ void trigger_task(void *p) {
 
     while (true) {
         gpio_put(TRIGGER_PIN, 1);
-        sleep_us(10);
+        vTaskDelay(pdMS_TO_TICKS(10));
         gpio_put(TRIGGER_PIN, 0);
 
         xSemaphoreGive(xSemaphoreTrigger);
