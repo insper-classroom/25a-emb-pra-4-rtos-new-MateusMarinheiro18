@@ -19,8 +19,8 @@ const uint LED_1_OLED = 20;
 const uint LED_2_OLED = 21;
 const uint LED_3_OLED = 22;
 
-#define TRIGGER_PIN 16
-#define ECHO_PIN 17
+#define TRIGGER_PIN 17
+#define ECHO_PIN 16
 
 QueueHandle_t xQueueTime;           
 SemaphoreHandle_t xSemaphoreTrigger;
@@ -111,7 +111,7 @@ void oled_task(void *p) {
         if (xSemaphoreTake(xSemaphoreTrigger, pdMS_TO_TICKS(100)) == pdTRUE) {
             if (xQueueReceive(xQueueDistance, &distancia_cm, pdMS_TO_TICKS(100))) {
 
-                if (distancia_cm > 0) {
+                if (distancia_cm > 0 && distancia_cm < 400) {
                     gfx_clear_buffer(&disp);
                     char msg[20];
                     sprintf(msg, "Distancia: %.2f cm", distancia_cm);
